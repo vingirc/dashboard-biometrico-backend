@@ -1,0 +1,12 @@
+# Secretos locales: NUNCA deben entrar al contexto de build ni quedar dentro del jar/imagen.
+# En despliegue estos valores llegan por variables de entorno.
+src/main/resources/application-local.properties
+.env
+CREDENTIALS.local.md
+
+target/
+*.log
+.git/
+.github/
+.vscode/
+.idea/

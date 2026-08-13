@@ -1,0 +1,26 @@
+# ===================================================================
+# PLANTILLA DE SECRETOS LOCALES
+#
+# Copiar a application-local.properties (ese archivo SI esta en .gitignore) y rellenar.
+# application.properties lo importa con spring.config.import; sin el, la app no arranca:
+# no hay valores por defecto para los secretos, a proposito.
+#
+# En CI/produccion no se usa este archivo: las mismas claves se definen como variables de
+# entorno (DB_PASSWORD, JWT_SECRET, ADMIN_PASSWORD, ADMIN_USERNAME).
+# Los tests tampoco lo necesitan: src/test/resources/application.properties es autocontenido.
+# ===================================================================
+
+# Password del usuario 'admin' de PostgreSQL. Debe coincidir con POSTGRES_PASSWORD del
+# docker-compose.yaml que levanta la base.
+DB_PASSWORD=cambia-esto
+
+# Clave HMAC-SHA256 para firmar los JWT. Minimo 32 caracteres (256 bits) o la app falla al arrancar.
+# Generar una aleatoria, por ejemplo: openssl rand -base64 48
+JWT_SECRET=cambia-esto-por-una-clave-aleatoria-de-32-caracteres-o-mas
+
+# Password del ADMIN que se siembra en el primer arranque (solo si no existe ningun ADMIN).
+# Ver AdminSeeder. Cambialo despues del primer login.
+ADMIN_PASSWORD=cambia-esto
+
+# Opcional: username de ese ADMIN sembrado. Si se omite, se usa "admin".
+#ADMIN_USERNAME=admin

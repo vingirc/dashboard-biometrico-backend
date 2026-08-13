@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: telemetria-api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # mvnw esta versionado sin bit de ejecucion (se creo desde Windows), asi que en Linux
+      # habria que invocarlo con `sh mvnw`. Se marca ejecutable aqui para poder usar ./mvnw.
+      - name: Permitir ejecutar el wrapper de Maven
+        run: chmod +x mvnw
+
+      # No hace falta levantar PostgreSQL: src/test/resources/application.properties apunta los
+      # tests a una base H2 en memoria.
+      - name: Ejecutar tests
+        run: ./mvnw -B test

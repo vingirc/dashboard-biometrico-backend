@@ -2,6 +2,7 @@ package com.biometria.telemetria_api.controller;
 
 import com.biometria.telemetria_api.dto.TelemetryIngestRequest;
 import com.biometria.telemetria_api.dto.TelemetryResponse;
+import com.biometria.telemetria_api.dto.TelemetryUserStatsResponse;
 import com.biometria.telemetria_api.service.TelemetryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,11 @@ public class TelemetryController {
     @GetMapping("/recent")
     public List<TelemetryResponse> recent(Authentication authentication) {
         return telemetryService.getRecent(authentication);
+    }
+
+    @GetMapping("/stats")
+    public List<TelemetryUserStatsResponse> stats() {
+        return telemetryService.getStatsByUser();
     }
 
     @PostMapping("/ingest")

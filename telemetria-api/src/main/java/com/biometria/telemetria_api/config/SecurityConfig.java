@@ -73,6 +73,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/telemetry/ingest").permitAll()
                         // La lectura ya no es publica: se filtra por usuario autenticado (ADMIN ve todo).
                         .requestMatchers(HttpMethod.GET, "/api/telemetry/recent").authenticated()
+                        // Estadisticas agregadas de todos los usuarios: vista de administracion.
+                        // Sin HttpMethod a proposito: cualquier verbo sobre esta ruta exige ADMIN.
+                        .requestMatchers("/api/telemetry/stats").hasRole("ADMIN")
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         // Sondas de monitoreo: solo health e info (lista blanca en application.properties),

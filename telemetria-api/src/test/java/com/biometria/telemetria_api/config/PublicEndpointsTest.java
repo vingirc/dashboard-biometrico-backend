@@ -52,5 +52,6 @@ class PublicEndpointsTest {
         mockMvc.perform(get("/api/users")).andExpect(status().isForbidden());
         mockMvc.perform(get("/api/audit-logs")).andExpect(status().isForbidden());
         mockMvc.perform(get("/api/telemetry/recent")).andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/telemetry/stats")).andExpect(status().isForbidden());
     }
 }

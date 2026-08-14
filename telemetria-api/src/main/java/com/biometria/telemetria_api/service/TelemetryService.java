@@ -2,6 +2,7 @@ package com.biometria.telemetria_api.service;
 
 import com.biometria.telemetria_api.dto.TelemetryIngestRequest;
 import com.biometria.telemetria_api.dto.TelemetryResponse;
+import com.biometria.telemetria_api.dto.TelemetryUserStatsResponse;
 import com.biometria.telemetria_api.model.TelemetryRecord;
 import com.biometria.telemetria_api.model.User;
 import com.biometria.telemetria_api.repository.TelemetryRepository;
@@ -39,6 +40,13 @@ public class TelemetryService {
                 : telemetryRepository.findTop50ByUserUsernameOrderByTimestampDesc(authentication.getName());
 
         return records.stream().map(this::toResponse).toList();
+    }
+
+    // Estadisticas agregadas de TODOS los usuarios: solo para ADMIN. No recibe Authentication ni
+    // filtra por llamante a proposito -- el control de acceso vive en SecurityConfig
+    // (/api/telemetry/stats -> hasRole("ADMIN")), no duplicado aqui.
+    public List<TelemetryUserStatsResponse> getStatsByUser() {
+        return telemetryRepository.findStatsByUser();
     }
 
     public TelemetryResponse ingest(TelemetryIngestRequest request, Authentication authentication) {

@@ -77,4 +77,17 @@ class TelemetryControllerTest {
 
         verify(telemetryService, never()).getStatsByUser();
     }
+
+    // La regla de seguridad matchea la ruta exacta, asi que una barra final no la matchea y cae en
+    // anyRequest().authenticated() -- suficiente para un USER. Lo que cierra el hueco es que Spring MVC
+    // 6+ ya no equipara "/stats/" con "/stats": no hay handler y no se llega al servicio. Este test fija
+    // esa conducta; si algun dia se reactivara el trailing-slash match, aqui saltaria la fuga.
+    @Test
+    @WithMockUser(roles = "USER")
+    void unaBarraFinalNoEsUnAtajoParaSaltarseLaReglaDeAdmin() throws Exception {
+        mockMvc.perform(get("/api/telemetry/stats/"))
+                .andExpect(status().isNotFound());
+
+        verify(telemetryService, never()).getStatsByUser();
+    }
 }
